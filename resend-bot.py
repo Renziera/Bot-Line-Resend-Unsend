@@ -3,7 +3,7 @@ from linepy import *
 from akad.ttypes import Message
 import json,sys,atexit,datetime
 
-cl = LineClient(authToken="Input your token")
+cl = LINE(authToken="yvQIBL003dlZyE/SbWpaOSFWPaorkgqykWbLF1DQwg9k9mA6x+Iq8J74PgE1AUt8MwTwAFUEV/LuNSii2VdS+/4nEqVbEU6u1eL+O+HO6nr3He7VnI8eM5Hdx1zp+Ui0Lvyu39xht8tY4mBtw8tSTgdB04t89/1O/w1cDnyilFU=")
 tracer = LinePoll(cl)
 hello = "I'm Message resend bot.\nI resend message when deleted.\nI'm glad to meet you.\n(I don't have any commands)"
 admin = "Input your mid"

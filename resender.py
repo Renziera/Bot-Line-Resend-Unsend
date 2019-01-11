@@ -1,7 +1,7 @@
 from linepy import *
 from datetime import datetime
 
-cl = LINE("Input your token")
+cl = LINE("EAMV2psGy5fr5GN5qpS4.2+GtP4zfwsRR+7bbOCojna.nTu/HalbewOVJMHAsa7WZo9le+g/ceNW6ddx9jKtd3w=")
 tracer = OEPoll(cl)
 log = {}
 
