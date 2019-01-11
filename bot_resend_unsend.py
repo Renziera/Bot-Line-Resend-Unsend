@@ -13,19 +13,16 @@ def cTime_to_Text(unixtime):
 # make response text
 def mk_resp(msg_id):
     return '\n'.join([
-    'SentMessage cancelled.',
-    '[Sender]',
     line.getContact(log[msg_id]["from"]).displayName,
-    '[Time]',
-    cTime_to_Text(str(log[msg_id]["createdTime"])),
-    '[Message]',
-    log[msg_id]["text"]
+    'Unsent:',
+    log[msg_id]["text"],
+    cTime_to_Text(str(log[msg_id]["createdTime"]))
     ])
 
 # Receive messages from OEPoll
 def RECEIVE_MESSAGE(op):
     msg = op.message
-
+    line.log(msg)
     text = msg.text
     msg_id = msg.id
     receiver = msg.to
@@ -36,11 +33,13 @@ def RECEIVE_MESSAGE(op):
         # Personal chat
         if msg.toType == 0:
             # Add to log
-            log[msg.id] = {"text":text,"from":sender,"createdTime":msg.createdTime}
+            log[msg_id] = {"text":text,"from":sender,"createdTime":msg.createdTime}
         # Group chat
         if msg.toType == 2:
+            # Chat checked request
+            line.sendChatChecked(receiver, msg_id)
             # Add to log
-            log[msg.id] = {"text":text,"from":receiver,"createdTime":msg.createdTime}
+            log[msg_id] = {"text":text,"from":receiver,"createdTime":msg.createdTime}
 
         # Get sender contact
         contact = line.getContact(sender)
@@ -50,11 +49,12 @@ def RECEIVE_MESSAGE(op):
 
 # Load from Log when message cancelled
 def NOTIFIED_DESTROY_MESSAGE(op):
+    line.log(op)
     try:
         at = op.param1
         msg_id = op.param2
         if msg_id in log:
-            line.sendMessage(at,mk_resp(msg_id))
+            line.sendMessage(log[msg_id]["from"],mk_resp(msg_id))
     except Exception as e:
         print(e)
 
